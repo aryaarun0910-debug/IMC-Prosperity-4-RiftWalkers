@@ -27,11 +27,11 @@ The chart above is the competition in one image: the algorithm that scored highe
 
 ## About
 
-RiftWalkers was a two-person team competing across both tracks of Prosperity 4: an autonomous **algorithmic** trading engine and a series of one-shot **manual** trading puzzles. This repository documents all five rounds end to end — the products, the strategies, the underlying mathematics, the results, and a deliberately honest analysis of what worked and what did not.
+**IMC Prosperity** is one of the largest quantitative trading competitions in the world — a multi-week tournament run by the market-making firm [IMC Trading](https://www.imc.com/), drawing tens of thousands of teams of students, quants, and professionals. Prosperity 4 ran across **five rounds with 18,803 teams**, each round combining an **algorithmic** challenge (an autonomous trading program run against bot counterparties on a simulated exchange) with a **manual** challenge (a one-shot game-theoretic or quantitative puzzle). It rewards breadth — market making, options, statistical arbitrage, optimization, game theory — under hard engineering constraints.
 
-The algorithmic side is a single-file, standard-library-only Python trading engine implementing nine strategy archetypes (market making, statistical arbitrage, options, conversion arbitrage) on a discrete-tick exchange. The manual side is a set of from-first-principles solutions to game-theoretic and quantitative problems. Supporting both is a custom backtesting, walk-forward validation, and signal-research pipeline.
+**RiftWalkers** was a two-person team that finished **700th of 18,803 globally (top 3.7%), 76th in the UK**, with a **6th-in-the-world** result on the Round 1 manual challenge.
 
-The work spans market microstructure, options pricing, time-series modeling, Bayesian methods, game theory, and constrained optimization — all implemented and validated from scratch.
+This repository documents all five rounds end to end — the products, the strategies, the underlying mathematics, the results, and a deliberately honest analysis of what worked and what did not. The algorithmic side is a single-file, standard-library-only Python trading engine; the manual side is a set of from-first-principles solutions to game-theoretic and quantitative problems; supporting both is a custom backtesting, walk-forward validation, and signal-research pipeline. The work spans market microstructure, options pricing, time-series modeling, Bayesian methods, game theory, and constrained optimization — all implemented and validated from scratch.
 
 ---
 
