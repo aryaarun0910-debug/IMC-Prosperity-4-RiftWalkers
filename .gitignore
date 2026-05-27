@@ -1,0 +1,46 @@
+# ---- Raw competition data and logs (large; not needed to understand the work) ----
+# 414MB+ of tick CSVs and server-log dumps. The analysis and results live in docs/.
+PIPELINE/data/
+PIPELINE/reference/
+**/server_logs/
+**/*.log
+# Submission JSON dumps (large activity logs)
+**/[0-9][0-9][0-9][0-9][0-9][0-9].json
+**/[0-9][0-9][0-9][0-9][0-9][0-9]*.json
+
+# ---- Round 5 raw submission dumps (logs/json kept out; story is in docs/) ----
+Round 5 - Algo side final check/**/*.log
+Round 5 - Algo side final check/**/*.json
+
+# ---- Knowledge-graph build artifacts (large generated files) ----
+graphify-out/
+**/.graphify_*
+**/graph.html
+**/graph.json
+
+# ---- Manual round raw screenshots/exports (optional; keep curated ones in docs/) ----
+PIPELINE/Manual Round*/**/*.png
+
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# ---- Internal / agent files (not part of the public record) ----
+CLAUDE.md
+.claude/
+.algo-knowledge/
+
+# ---- Temp / archive ----
+archive/
+*.tmp
