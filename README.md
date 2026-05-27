@@ -4,15 +4,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![Teams](https://img.shields.io/badge/field-18%2C803%20teams-lightgrey)
-![Result](https://img.shields.io/badge/finish-700th%20(top%204%25)-success)
+![Global](https://img.shields.io/badge/global-700th%20(top%204%25)-success)
+![UK](https://img.shields.io/badge/UK-76th-success)
 
 A complete, candid record of a two-person team's run through **IMC Prosperity 4** — a five-round global algorithmic and manual trading competition run by [IMC Trading](https://www.imc.com/), with 18,803 participating teams.
 
-> **Final standing: 700th of 18,803 (top 3.7%). Manual Round 1: 6th in the world.**
+> **76th in the UK · 700th of 18,803 globally (top 3.7%) · Manual Round 1: 6th in the world.**
 
-| | Overall | Algorithmic | Manual | Country |
+| | Global | UK | Algorithmic | Manual |
 |---|---|---|---|---|
-| **Final rank** | **#700** | #873 | #708 | #76 |
+| **Final rank** | #700 | **#76** | #873 | #708 |
 
 *Cumulative score: 272,456 XIRECs.*
 
