@@ -345,6 +345,59 @@ def vol_smile_and_surface():
         print("  (vol smile skipped — IV inversion produced no clean points)")
 
 
+# ============================================================
+# 7. Walk-forward validation: train (day 2+3) vs held-out test (day 4)
+# ============================================================
+def walk_forward_validation():
+    days = {d: load_mids(os.path.join(R5, f"prices_round_5_day_{d}.csv")) for d in (2, 3, 4)}
+    products = [p for ps in CATEGORIES.values() for p in ps]
+    grid = [(w, z) for w in (200, 500, 1000) for z in (1.5, 2.0, 2.5)]
+
+    pts = []  # (train_pnl, test_pnl, passed)
+    for p in products:
+        if not all(p in days[d] for d in (2, 3, 4)):
+            continue
+        # pick the config with the best train (day2+day3) PnL, requiring both train days > 0
+        best = None
+        for w, z in grid:
+            d2 = _mr_pnl(days[2][p], w, z)
+            d3 = _mr_pnl(days[3][p], w, z)
+            if d2 > 0 and d3 > 0 and (best is None or d2 + d3 > best[0]):
+                best = (d2 + d3, w, z)
+        if best is None:
+            continue
+        train = best[0]
+        test = _mr_pnl(days[4][p], best[1], best[2])
+        pts.append((train, test, test > 0))
+
+    if not pts:
+        print("  (walk-forward produced no points)")
+        return
+    fig, ax = plt.subplots(figsize=(9.5, 6.5))
+    surv = [(a, b) for a, b, ok in pts if ok]
+    fail = [(a, b) for a, b, ok in pts if not ok]
+    if surv:
+        ax.scatter([a for a, _ in surv], [b for _, b in surv], s=60, color=TEAL,
+                   edgecolor="white", linewidth=0.5, label="Survived out-of-sample (test > 0)", zorder=3)
+    if fail:
+        ax.scatter([a for a, _ in fail], [b for _, b in fail], s=60, color=AMBER,
+                   edgecolor="white", linewidth=0.5, label="Failed out-of-sample (test < 0)", zorder=3)
+    ax.axhline(0, color="#333", linewidth=1.2)
+    lim = max(abs(v) for pr in pts for v in pr[:2]) * 1.1
+    ax.plot([0, lim], [0, lim], color="#bbb", linestyle=":", linewidth=1, label="test = train (no decay)")
+    ax.set_xlabel("Training PnL  (days 2 + 3, best in-sample config)")
+    ax.set_ylabel("Held-out test PnL  (day 4, same config)")
+    ax.set_title("Walk-Forward Validation: In-Sample Fit Does Not Guarantee Out-of-Sample PnL")
+    # shade the failure region
+    ax.axhspan(-lim, 0, color=AMBER, alpha=0.05)
+    ax.annotate("Looked strong in training,\nlost money on the unseen day",
+                xy=(lim*0.55, -lim*0.35), fontsize=9.5, color=AMBER, ha="center")
+    ax.legend(loc="upper left", framealpha=0.9, fontsize=9)
+    ax.set_xlim(0, lim); ax.set_ylim(-lim, lim)
+    fig.tight_layout(); fig.savefig(os.path.join(OUT, "walkforward_validation.png"), dpi=140); plt.close(fig)
+    print("  walkforward_validation.png")
+
+
 if __name__ == "__main__":
     print("Generating quantitative analysis charts from real competition data:")
     correlation_heatmap()
@@ -352,4 +405,5 @@ if __name__ == "__main__":
     mean_reversion_surface()
     risk_analysis()
     vol_smile_and_surface()
+    walk_forward_validation()
     print("Done ->", OUT)

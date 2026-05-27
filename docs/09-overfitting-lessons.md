@@ -34,6 +34,14 @@ One teammate produced several candidates that hardcoded long/short directional p
 
 The candidate that looked best on the single-day test lost money on a different day. The candidate that looked weakest on the single-day test was the only one robust across all three. We recommended the cross-day-validated version.
 
+## The evidence, generalized
+
+The same effect is visible across the entire Round 5 product set, not just the two candidate algorithms. Taking the best in-sample configuration for each product (selected on days 2 and 3) and evaluating it unchanged on the held-out day 4 produces this:
+
+![Walk-forward validation](assets/walkforward_validation.png)
+
+Each point is a product. The horizontal axis is training PnL; the vertical axis is held-out test PnL with the same configuration. A large fraction of products with strong training PnL fall into the shaded region — they made money in-sample and lost it on the unseen day. The survivors (above zero) are the only configurations worth shipping, and they are not the ones with the highest training PnL. This is the quantitative basis for the validation rules below.
+
 ## The discipline that resulted
 
 After Round 4, every algorithmic decision was gated on cross-day evidence:
