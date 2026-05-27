@@ -124,6 +124,6 @@ Statistical arbitrage · market microstructure · options pricing (Black-Scholes
 
 ## Contributors
 
-A two-person team. See individual round documents for the work split between the algorithmic and manual tracks.
+A two-person team (Chris Legge and Arya Arun). See individual round documents for the work split between the algorithmic and manual tracks.
 
 This repository is a retrospective compiled after the competition closed; all figures are the official final results. The writeups are deliberately candid about failures — particularly the Round 4 algorithmic loss and its root cause — because the analysis of those failures is the most transferable part of the work.
