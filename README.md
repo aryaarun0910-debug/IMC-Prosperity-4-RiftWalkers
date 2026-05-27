@@ -114,6 +114,36 @@ The engine implements all nine archetypes (developed across the practice round a
 
 Supporting infrastructure includes Bayesian Online Changepoint Detection for regime shifts, trim-based position-limit enforcement, markout-driven adverse-selection sizing, and a runtime product classifier. Every model — Black-Scholes, implied-volatility inversion, Kalman filtering, AR regression, changepoint detection — is implemented in pure Python to satisfy the submission constraints. Details in [Pipeline Architecture](docs/08-pipeline-architecture.md).
 
+The nine archetypes are thin handlers over a shared infrastructure core. The dependency topology shows position-limit enforcement as the universal hub, with fair-value estimation and markout sizing as secondary hubs:
+
+![Engine architecture topology](docs/assets/architecture_topology.png)
+
+---
+
+## Selected analysis
+
+Every figure below is generated from the real competition data ([`analysis/generate_quant_charts.py`](analysis/generate_quant_charts.py)). The full treatment is in [Quantitative Analysis](docs/11-quantitative-analysis.md).
+
+**Cross-sectional structure.** The Round 5 signal hunt began by asking which of 50 products moved together. Two categories had clean, cross-day-stable structure — a two-factor SnackPacks system and a single-factor Pebbles system — and the rest were noise. That selection drove every relative-value decision.
+
+![Correlation structure](docs/assets/correlation_heatmap.png)
+
+**Where the edge lives.** Sweeping the mean-reversion parameters over a grid produces a smooth PnL surface with a broad plateau, not a sharp spike. Shipping inside the plateau rather than on the peak is a deliberate trade of in-sample PnL for out-of-sample robustness.
+
+![Mean-reversion parameter surface](docs/assets/mean_reversion_surface_3d.png)
+
+**Why robustness matters.** Taking each product's best in-sample configuration and testing it on a held-out day shows the core lesson of the competition: a large fraction of strong-in-training products lose money on the unseen day. Only the survivors are worth shipping — and they are not the highest-training-PnL ones.
+
+![Walk-forward validation](docs/assets/walkforward_validation.png)
+
+**Risk, not just PnL.** The equity curve, drawdown profile, and per-tick return distribution for the headline strategy — steady accumulation, contained drawdown, controlled tails.
+
+![Risk analysis](docs/assets/risk_analysis.png)
+
+**Options.** Inverting Black-Scholes on the Round 4 voucher prices recovers a well-formed, cross-day-stable implied-volatility smile — the basis for trading relative mispricing across strikes rather than absolute price.
+
+![Implied-volatility smile](docs/assets/vol_smile.png)
+
 ---
 
 ## Methods
