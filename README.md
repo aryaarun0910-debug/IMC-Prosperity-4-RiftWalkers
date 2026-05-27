@@ -17,6 +17,8 @@ A complete, candid record of a two-person team's run through **IMC Prosperity 4*
 
 *Cumulative score: 272,456 XIRECs.*
 
+![Official final leaderboard](docs/assets/leaderboard.png)
+
 ![Overfit vs signal-based validation](docs/assets/overfitting_comparison.png)
 
 The chart above is the competition in one image: the algorithm that scored highest on the single-day check (left) lost money on a different day, while the cross-day-validated approach (right) was an order of magnitude more robust. Recognizing that distinction — signal versus fit — is the throughline of this repository.
