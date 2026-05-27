@@ -87,6 +87,7 @@ The manual track consistently outperformed the algorithmic track in relative ran
 | [Pipeline Architecture](docs/08-pipeline-architecture.md) | Trading engine and research/validation tooling |
 | [Overfitting Analysis](docs/09-overfitting-lessons.md) | The central technical finding, with data |
 | [Retrospective](docs/10-retrospective.md) | What worked, what did not, and where the remaining edge is |
+| [Quantitative Analysis](docs/11-quantitative-analysis.md) | Correlation structure, volatility, risk, and the options vol surface |
 
 Source code is mapped in [`src/README.md`](src/README.md).
 
