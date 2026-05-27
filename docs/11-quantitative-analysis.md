@@ -41,6 +41,14 @@ PnL alone is not a risk picture. The equity curve, drawdown profile, and per-tic
 - **Drawdown** — the maximum peak-to-trough excursion is small relative to total PnL; the strategy does not dig deep holes it then has to climb out of.
 - **Return distribution** — centered positive with controlled tails. The implied Sharpe is reported on the chart.
 
+## Is the edge real, or luck?
+
+A total PnL is a point estimate; it does not say whether the edge is statistically distinguishable from zero. Resampling the strategy's per-round-trip PnLs with replacement (a bootstrap) builds a confidence interval on the total.
+
+![Bootstrap significance](assets/bootstrap_significance.png)
+
+Across the three days, the PEBBLES_XL mean-reversion strategy made an observed +86,970 over 120 round-trips. The bootstrap 95% confidence interval is [+25,668, +141,050], and the probability of a non-positive total is **0.36%**. The lower bound sits well above zero — the edge is statistically significant, not a lucky run. This is the kind of evidence that should precede sizing real capital into any signal.
+
 ## Options — the volatility smile and surface
 
 Rounds 3 and 4 introduced option (voucher) products. Inverting Black-Scholes on the market mid prices recovers the implied-volatility smile across strikes — the foundation of the options market-making strategy.
