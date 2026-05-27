@@ -1,0 +1,9 @@
+# The submission engine (src/engine/trader.py, trader_r5.py) is standard-library only
+# by competition rule and needs nothing here.
+#
+# These are for the offline research, validation, and chart-generation tooling
+# (src/tools, src/analysis) and the demo.
+numpy>=1.24
+pandas>=2.0
+matplotlib>=3.7
+scikit-learn>=1.3

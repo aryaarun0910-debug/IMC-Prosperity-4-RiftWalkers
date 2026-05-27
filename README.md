@@ -1,15 +1,56 @@
 # IMC Prosperity 4 — Team RiftWalkers
 
-A complete record of a two-person team's run through IMC Trading's **Prosperity 4**, a five-round global algorithmic and manual trading competition with 18,803 participating teams.
+[![CI](https://github.com/aryaarun0910-debug/IMC-Prosperity-4-RiftWalkers/actions/workflows/ci.yml/badge.svg)](https://github.com/aryaarun0910-debug/IMC-Prosperity-4-RiftWalkers/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![Teams](https://img.shields.io/badge/field-18%2C803%20teams-lightgrey)
+![Result](https://img.shields.io/badge/finish-700th%20(top%204%25)-success)
 
-**Final standing: 700th of 18,803 (top 3.7%).**
-**Manual Round 1: 6th globally.**
+A complete, candid record of a two-person team's run through **IMC Prosperity 4** — a five-round global algorithmic and manual trading competition run by [IMC Trading](https://www.imc.com/), with 18,803 participating teams.
 
-This repository documents each round end to end — the products, the strategies, the underlying mathematics, the results, and the analysis of what worked and what did not. The algorithmic side is a single-file, standard-library-only Python trading engine; the manual side is a set of from-first-principles solutions to game-theoretic and quantitative puzzles. Supporting both is a custom backtesting, validation, and signal-research pipeline.
+> **Final standing: 700th of 18,803 (top 3.7%). Manual Round 1: 6th in the world.**
+
+| | Overall | Algorithmic | Manual | Country |
+|---|---|---|---|---|
+| **Final rank** | **#700** | #873 | #708 | #76 |
+
+*Cumulative score: 272,456 XIRECs.*
+
+![Overfit vs signal-based validation](docs/assets/overfitting_comparison.png)
+
+The chart above is the competition in one image: the algorithm that scored highest on the single-day check (left) lost money on a different day, while the cross-day-validated approach (right) was an order of magnitude more robust. Recognizing that distinction — signal versus fit — is the throughline of this repository.
 
 ---
 
-## Results
+## About
+
+RiftWalkers was a two-person team competing across both tracks of Prosperity 4: an autonomous **algorithmic** trading engine and a series of one-shot **manual** trading puzzles. This repository documents all five rounds end to end — the products, the strategies, the underlying mathematics, the results, and a deliberately honest analysis of what worked and what did not.
+
+The algorithmic side is a single-file, standard-library-only Python trading engine implementing nine strategy archetypes (market making, statistical arbitrage, options, conversion arbitrage) on a discrete-tick exchange. The manual side is a set of from-first-principles solutions to game-theoretic and quantitative problems. Supporting both is a custom backtesting, walk-forward validation, and signal-research pipeline.
+
+The work spans market microstructure, options pricing, time-series modeling, Bayesian methods, game theory, and constrained optimization — all implemented and validated from scratch.
+
+---
+
+## Quickstart
+
+The submission engine is standard-library only by competition rule. The research tooling and this demo use scientific Python.
+
+```bash
+git clone https://github.com/aryaarun0910-debug/IMC-Prosperity-4-RiftWalkers.git
+cd IMC-Prosperity-4-RiftWalkers
+pip install -r requirements.txt
+
+python demo.py            # run the Round 5 engine on synthetic data, end to end
+pytest tests/ -q          # 17 unit tests: position limits, z-score, Black-Scholes
+python analysis/generate_repo_charts.py   # regenerate the figures in docs/assets
+```
+
+The real competition data is large and not included (see `.gitignore`); `demo.py` generates a synthetic mean-reverting series with the same order-book schema so the engine can be run and inspected without it.
+
+---
+
+## Results by round
 
 | Round | Phase | Cumulative XIRECs | Algo PnL | Algo Rank | Manual PnL | Manual Rank |
 |-------|-------|-------------------|----------|-----------|------------|-------------|
@@ -23,13 +64,13 @@ This repository documents each round end to end — the products, the strategies
 
 ![Cumulative score across rounds](docs/assets/cumulative_progression.png)
 
-The manual track consistently outperformed the algorithmic track in relative ranking. The contrast is the throughline of the competition and is examined directly in the round writeups.
+The manual track consistently outperformed the algorithmic track in relative ranking — the contrast that the round writeups examine directly.
 
 ![Algorithmic vs manual PnL and rank](docs/assets/algo_vs_manual.png)
 
 ---
 
-## Contents
+## Documentation
 
 | Document | Focus |
 |----------|-------|
@@ -43,6 +84,8 @@ The manual track consistently outperformed the algorithmic track in relative ran
 | [Pipeline Architecture](docs/08-pipeline-architecture.md) | Trading engine and research/validation tooling |
 | [Overfitting Analysis](docs/09-overfitting-lessons.md) | The central technical finding, with data |
 | [Retrospective](docs/10-retrospective.md) | What worked, what did not, and where the remaining edge is |
+
+Source code is mapped in [`src/README.md`](src/README.md).
 
 ---
 
@@ -72,6 +115,8 @@ Statistical arbitrage · market microstructure · options pricing (Black-Scholes
 
 ---
 
-## A note on the analysis
+## Contributors
 
-This repository is a retrospective compiled after the competition closed. All figures are the official final results. The writeups are deliberately candid about failures — particularly the Round 4 algorithmic loss and its root cause — because the analysis of those failures is the most transferable part of the work.
+A two-person team. See individual round documents for the work split between the algorithmic and manual tracks.
+
+This repository is a retrospective compiled after the competition closed; all figures are the official final results. The writeups are deliberately candid about failures — particularly the Round 4 algorithmic loss and its root cause — because the analysis of those failures is the most transferable part of the work.
