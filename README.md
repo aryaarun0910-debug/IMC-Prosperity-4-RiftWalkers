@@ -152,6 +152,16 @@ Statistical arbitrage · market microstructure · options pricing (Black-Scholes
 
 ---
 
+## Reflection
+
+Five rounds, two people, and a leaderboard that reset halfway through. The clearest pattern in our own results is the gap between the two tracks: the manual side — where every decision came from a model we built and could defend from first principles — consistently finished near the top of the field, while the algorithmic side — where we were modeling a market we could observe for only a few days — was where we got hurt.
+
+The lesson we keep returning to is the one Round 4 taught expensively: a strategy that only works on the data it was fit to is not a strategy. The discipline that came out of it — cross-day validation, preferring broad parameter optima over sharp peaks, distrusting a single good day — is the most transferable thing we took from the competition, and it is why these writeups spend as much time on the losses as on the wins.
+
+If we ran it again, the effort would go where the evidence says it should: less time tuning parameters the data shows don't matter, more time on what a signal actually *is* and whether it survives out of sample. Finishing in the top 4% of 18,803 teams was a result we were glad of — but the honest account of how we got there, mistakes included, is the part worth keeping.
+
+---
+
 ## Contributors
 
 A two-person team (Chris Legge and Arya Arun). See individual round documents for the work split between the algorithmic and manual tracks.
