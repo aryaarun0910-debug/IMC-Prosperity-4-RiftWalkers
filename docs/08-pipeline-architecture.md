@@ -6,6 +6,10 @@ The system has two halves: a submission engine that must run inside the exchange
 
 A single self-contained file. The exchange disallows third-party libraries, so every model is implemented in pure Python and the engine must serialize all state into a sub-90KB string each tick.
 
+The strategy archetypes are thin handlers over a shared core of infrastructure. The topology below shows the dependency structure — position-limit enforcement (`validate_orders`) is the universal hub, with fair-value estimation, markout sizing, and the product classifier as secondary hubs, while specialized components (Black-Scholes, IV inversion, the vol-smile fit) attach only to the strategies that need them.
+
+![Engine architecture topology](assets/architecture_topology.png)
+
 ### Strategy dispatch
 Each product is routed to one of nine strategy handlers, either by an explicit per-product configuration or by a runtime classifier when an unconfigured product appears:
 
