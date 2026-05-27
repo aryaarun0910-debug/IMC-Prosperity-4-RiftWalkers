@@ -88,6 +88,7 @@ The manual track consistently outperformed the algorithmic track in relative ran
 | [Overfitting Analysis](docs/09-overfitting-lessons.md) | The central technical finding, with data |
 | [Retrospective](docs/10-retrospective.md) | What worked, what did not, and where the remaining edge is |
 | [Quantitative Analysis](docs/11-quantitative-analysis.md) | Correlation structure, volatility, risk, and the options vol surface |
+| [Engineering Practices](docs/12-engineering-practices.md) | Constraint-driven design, testing, CI, reproducibility, validation discipline |
 
 Source code is mapped in [`src/README.md`](src/README.md).
 
