@@ -1,32 +1,33 @@
-# 03 — Round 2: Qualifying + Game Theory
+# 03 — Round 2: Qualifying
 
 **Result:** Algo +73,268 · Manual +187,694 (rank 128) · Cumulative 444,349 — **qualified for Phase 2**
 
-Round 2 closed out the qualifier phase. Since Phase 1 only required ~200K cumulative XIRECs to advance (and we were at 183K after R1), our explicit strategy was **"clear the bar safely, don't over-optimize."** The leaderboard would reset for Phase 2, so burning effort on R2 micro-edges was wasted capacity.
+Round 2 closed out the qualifier phase. It continued with the same two market-making products as Round 1 (`ASH_COATED_OSMIUM` and `INTARIAN_PEPPER_ROOT`), so the algorithmic work was refinement rather than new strategy.
+
+Phase 1 only required ~200K cumulative XIRECs to advance, and we were at 183K after Round 1. The explicit strategy was therefore **"clear the bar safely, don't over-optimize"** — the leaderboard resets for Phase 2, so effort spent squeezing micro-edges out of R2 would have been wasted capacity better saved for the rounds that actually decide placement.
 
 ## Algorithmic side
 
-R2 extended the R1 product set with additional market-making and basket products. Key engineering work:
+Refinement of the Round 1 `pegged` strategies on the same two products:
+- Tuning the inventory thresholds and quote offsets on the stable product (ASH).
+- Refining the drift handling on INTARIAN_PEPPER_ROOT.
 
-- **Basket arbitrage** (`basket_arb`) — index products priced against a weighted basket of components. We used **z-score entry** on the premium (basket price − NAV) rather than absolute thresholds. A key finding from backtesting: *absolute* premium thresholds lose money (you trade noise), while *z-score* thresholds adapt to volatility regimes. Half-sized component hedging on each entry.
-- **Adverse-selection discovery** — we learned the backtest fill model was ~5× more generous than the real server. On the server, fills only happen on ticks where a market trade occurs (~4% of ticks). This recalibrated all our PnL expectations downward and made us distrust backtest-only validation.
-
-A documented limitation: basket arbitrage was only marginally profitable because the exchange gave us no passive fills — we paid adverse selection on every take. We kept it small.
+A more important discovery here was methodological: backtesting revealed the simulated fill model was substantially more generous than the live server, where fills only occur on the minority of ticks that carry a market trade. This recalibrated our PnL expectations downward and seeded a lasting distrust of backtest-only validation — the discipline that paid off in the Phase-2 rounds.
 
 ## Manual side — game-theoretic
 
-The R2 manual was **explicitly game-theoretic**: the payoff for your choice depended on what *everyone else* chose (a fee/crowding mechanic). This is fundamentally different from a fixed-answer puzzle — you have to model the population's behavior and find an equilibrium.
+The Round 2 manual was explicitly game-theoretic: the payoff for a choice depended on what everyone else chose (a crowding/fee mechanic). This is fundamentally different from a fixed-answer puzzle — you have to model the population's behavior and reason about the equilibrium, not just optimize for yourself in isolation.
 
-We scored +187,694 (rank 128) — strong by absolute number, but our weakest *relative* manual finish of the rounds where we competed seriously. The lesson logged at the time: **don't shortcut to "looks like last round."** Each manual prompt must be re-derived from scratch — the payoff function changes, and last round's solver model is often wrong for this round.
+We scored +187,694 (rank 128) — strong by absolute number, though our weakest *relative* manual finish among the rounds we contested seriously. The lesson logged at the time: **never shortcut to "looks like last round."** Each manual prompt has its own payoff function and must be re-derived from scratch.
 
 ## Qualifier secured
 
-At 444,349 cumulative XIRECs we cleared the 200K bar with large margin and advanced to Phase 2 ranked 1078th. From here, the real tournament — and the leaderboard reset — began.
+At 444,349 cumulative XIRECs we cleared the 200K threshold with large margin and advanced to Phase 2. From here the leaderboard reset and the real tournament — Rounds 3, 4, and 5 — began.
 
 ## Takeaways
 
-- **Resource triage matters.** Recognizing that R2 was a filter (not a final) let us conserve effort for the rounds that actually decided placement.
-- **Backtest ≠ reality.** The 5× fill-model gap discovered here informed every later "is this signal real?" decision.
+- **Resource triage matters.** Recognizing R2 as a filter rather than a final let us conserve effort for the rounds that counted.
+- **Backtest is not reality.** The fill-model gap discovered here informed every later "is this signal real?" decision.
 - **Game-theoretic manual rounds** require population modeling, not just optimal-for-me reasoning.
 
 → Next: [Round 3](04-round3.md)

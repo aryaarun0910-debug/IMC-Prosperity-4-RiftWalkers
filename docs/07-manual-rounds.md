@@ -4,18 +4,16 @@ Our manual game was the strongest part of our competition: **R1 6th in the world
 
 ---
 
-## Round 1 — Currency-exchange optimization (6th globally)
+## Round 1 — Equilibrium optimization (6th globally)
 
-**The puzzle:** convert holdings through a sequence of currencies using a fixed rate matrix, maximizing final value. The twist is that the optimal path isn't the naive greedy one — you have to search over conversion sequences.
+The Round 1 manual was a game-theoretic optimization. The approach that produced the result:
+- **Model the payoff structure exactly** from the prompt rather than approximating it.
+- **Reason about the equilibrium** — where aggregate participant behavior settles — rather than optimizing greedily in isolation, since the achievable payoff depends on the collective outcome.
+- **Cross-check against a hand expected-value calculation** (a discipline adopted after an earlier solver produced a wrong upper bound).
 
-**Our approach:**
-- Treat it as an **optimal-path search** over the rate matrix (bounded-depth enumeration of conversion sequences).
-- The product of rates along a path determines the payoff; the best path can involve "detour" conversions that look locally suboptimal.
-- Cross-checked against a hand expected-value calculation (a discipline we adopted after an earlier solver gave a wrong upper bound).
+**Result:** 87,897 against a theoretical maximum of ≈ 87,995 — within **0.1%**. **6th out of ~18,000 teams.**
 
-**Result:** 87,897 vs a theoretical max of ~87,995 — within **0.1%**. **6th out of ~18,000 teams.**
-
-The lesson that carried forward: *re-derive the payoff model from the prompt every time; never trust a prior round's solver blindly.*
+The lesson that carried forward: re-derive the payoff model from the prompt every time; never trust a prior round's solver blindly.
 
 ---
 

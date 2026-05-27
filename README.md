@@ -110,6 +110,8 @@ A single self-contained `trader.py` (standard library only — numpy, pandas, an
 | `pairs_arb` | Cointegrated pairs trading |
 | `generic_mm` | Fallback adaptive market making |
 
+The engine implements all nine archetypes (developed across the practice round and prior-year reference data); the live Prosperity 4 rounds exercised a subset — `pegged` market making on the Round 1–4 cash products, `options` IV-scalping on the Round 3–4 vouchers, and a mean-reversion engine on the Round 5 product set.
+
 Supporting infrastructure includes Bayesian Online Changepoint Detection for regime shifts, trim-based position-limit enforcement, markout-driven adverse-selection sizing, and a runtime product classifier. Every model — Black-Scholes, implied-volatility inversion, Kalman filtering, AR regression, changepoint detection — is implemented in pure Python to satisfy the submission constraints. Details in [Pipeline Architecture](docs/08-pipeline-architecture.md).
 
 ---

@@ -19,6 +19,8 @@ Each product is routed to one of nine strategy handlers, either by an explicit p
 - `pairs_arb` — cointegrated pairs trading.
 - `generic_mm` / `do_nothing` — fallback market making, or an explicit sit-out for unclassifiable products.
 
+All nine archetypes exist in the engine, developed across the practice round and prior-year reference data. The live Prosperity 4 rounds exercised a subset: `pegged` on the Round 1–4 cash products (ASH_COATED_OSMIUM, INTARIAN_PEPPER_ROOT, HYDROGEL_PACK, VELVETFRUIT_EXTRACT), `options` on the Round 3–4 VEV vouchers, and mean-reversion on the Round 5 product set. The remaining archetypes (basket, conversion, pairs, AR/signal-following) were built and validated against reference data but did not map to a live Round 1–5 product.
+
 ### Core mathematical components (all stdlib)
 - **Black-Scholes library** — normal CDF, call/put pricing, delta, vega, and Newton-style implied-volatility inversion.
 - **AR(p) estimation** — ordinary least squares via a Cholesky solve of the normal equations.

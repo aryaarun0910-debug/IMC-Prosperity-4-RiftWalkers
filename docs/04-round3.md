@@ -2,15 +2,17 @@
 
 **Result:** Algo +65,477 · Manual +67,713 · Cumulative 133,190 (Phase 2 reset, position 581)
 
-Phase 2 opened with the leaderboard reset to zero. Round 3 introduced **options/voucher products** alongside new market-making goods — the first round where derivatives pricing became central.
+Phase 2 opened with the leaderboard reset to zero, and the entire product set changed. Round 3 introduced an underlying plus a chain of **option/voucher products** — the first round where derivatives pricing became central.
 
 ## Algorithmic side
 
-### New market-making products
-- `HYDROGEL_PACK`, `ASH_COATED_OSMIUM`, `INTARIAN_PEPPER_ROOT` — pegged-style products. INTARIAN_PEPPER_ROOT carried a **fair-value drift** (a slow trend), so we added a drift term to the fair-value estimate rather than treating it as a flat peg.
+### Products
+- `VELVETFRUIT_EXTRACT` — the underlying, traded with the `pegged` market-making core.
+- `HYDROGEL_PACK` — a second market-making product.
+- `VEV_4000` … `VEV_6500` — a chain of voucher (call-option) products on VELVETFRUIT_EXTRACT, spanning strikes from deep in-the-money to far out-of-the-money.
 
 ### Options — `options` strategy
-Voucher products are options on an underlying. Our approach drew on top-team analysis (notably the 2nd-place "Frankfurt" team's IV-scalping method):
+The VEV vouchers are options on VELVETFRUIT_EXTRACT. Our approach drew on top-team analysis (notably the 2nd-place "Frankfurt" team's IV-scalping method):
 
 - **Black-Scholes in pure Python** — `_norm_cdf`, `bs_call`, `bs_delta`, `bs_vega`, plus Newton-style **implied-volatility inversion**. All stdlib.
 - **IV scalping** — compute implied vol per strike, fit a **volatility smile** (polynomial across moneyness), and trade strikes whose IV deviates from the smile fit (rich vol → sell, cheap vol → buy).
