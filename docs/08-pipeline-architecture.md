@@ -23,7 +23,18 @@ Each product is routed to one of nine strategy handlers, either by an explicit p
 - `pairs_arb` — cointegrated pairs trading.
 - `generic_mm` / `do_nothing` — fallback market making, or an explicit sit-out for unclassifiable products.
 
-All nine archetypes exist in the engine, developed across the practice round and prior-year reference data. The live Prosperity 4 rounds exercised a subset: `pegged` on the Round 1–4 cash products (ASH_COATED_OSMIUM, INTARIAN_PEPPER_ROOT, HYDROGEL_PACK, VELVETFRUIT_EXTRACT), `options` on the Round 3–4 VEV vouchers, and mean-reversion on the Round 5 product set. The remaining archetypes (basket, conversion, pairs, AR/signal-following) were built and validated against reference data but did not map to a live Round 1–5 product.
+**Known limitation — 7 of 9 archetypes are stubbed at dispatch.** Reading the actual dispatch block (`trader.py`, the `elif ptype == ...` chain) shows `ar_olivia`, `olivia_follow`, `wide_spread`, `basket_arb`, `conversion_arb`, `pairs_arb`, and even the literal `options` tag all resolve to `orders = []` — a no-op. Only `pegged` and the specific voucher handlers below are wired to real trading logic. This is not just "unused code": `classify_product_live()` is a real, statistically-grounded runtime classifier (AC1 autocorrelation, price-range %, spread width, basket-keyword and cointegration-pair detection) that can and does *actively assign* all seven stubbed types to an unrecognized product mid-competition — including assigning `options` to any newly-detected voucher/coupon/call/put product with a valid underlying. Had an unknown option-like product appeared live, the classifier would have correctly identified it and then silently traded nothing.
+
+This never affected the actual competition results, because every product that mattered (ASH_COATED_OSMIUM, INTARIAN_PEPPER_ROOT, HYDROGEL_PACK, VELVETFRUIT_EXTRACT, and each VEV strike) was **statically** pre-configured in `CONFIG` before each round started, bypassing the classifier entirely:
+
+- `pegged` → ASH_COATED_OSMIUM, INTARIAN_PEPPER_ROOT (R1), HYDROGEL_PACK, VELVETFRUIT_EXTRACT (R3/R4)
+- `voucher_intrinsic_mm` → VEV_4000 (deep-ITM voucher MM at intrinsic, delta-hedged to the underlying)
+- `otm_short` → VEV_5100–5500 (theta-decay short, sized per-strike from a computed decay table)
+- `do_nothing` → VEV_4500, VEV_5000, VEV_6000, VEV_6500 (explicitly disabled after live/backtest evidence showed no edge)
+- `generic_mm` → runtime fallback for auto-classified products the classifier could place a book on but not otherwise categorize
+- Round 5 used a separate, purpose-built engine (`trader_r5.py`) entirely, not this dispatch table.
+
+Three more real, non-stub, well-evidenced functions exist in the file — `skew_mm` (delta-hedged smile market-making), `mean_revert_mm` (deviation-sized mean reversion, built off a specific HYDROGEL_PACK diagnostic), and `voucher_chain_dir` (directional voucher positioning reverse-engineered from a competitor backtest) — but none is assigned in the final static `CONFIG`, so it's unconfirmed whether they fired live versus being built, tested, and superseded during development.
 
 ### Core mathematical components (all stdlib)
 - **Black-Scholes library** — normal CDF, call/put pricing, delta, vega, and Newton-style implied-volatility inversion.
