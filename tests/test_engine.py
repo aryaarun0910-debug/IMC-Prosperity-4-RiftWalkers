@@ -187,3 +187,58 @@ def test_engine_state_roundtrips():
     # feeding the produced state back in must not crash
     _, _, td2 = trader.run(_make_state(td1))
     assert isinstance(td2, str)
+
+
+# ---------------------------------------------------------------------------
+# Momentum filter (trader_r5.run_single_mr) — the R5 "key robustness fix"
+# per docs/06-round5.md: skip new mean-reversion entries during a strong
+# trend, since mean-reversion bleeds money when the price is trending
+# rather than oscillating. This was previously untested.
+# ---------------------------------------------------------------------------
+
+class _FakeState:
+    def __init__(self, mid):
+        od = dm.OrderDepth()
+        od.buy_orders = {mid - 0.5: 50}
+        od.sell_orders = {mid + 0.5: -50}
+        self.order_depths = {"X": od}
+        self.position = {}
+
+
+def _feed_calm_history(mem, result, ticks, window, mom_window, cfg, start=100.0, spread=0.1):
+    """Feed alternating small oscillations to build up rolling-stats history
+    with a small, known standard deviation, without triggering any entry."""
+    for i in range(ticks):
+        mid = start + (spread if i % 2 == 0 else -spread)
+        tr5.run_single_mr("X", cfg, _FakeState(mid), mem, result)
+
+
+def test_momentum_filter_blocks_entry_during_strong_trend():
+    cfg = {"window": 50, "z_in": 1.5, "z_out": 0.3, "max_pos": 10,
+           "mom_window": 20, "mom_thresh": 1.0}
+    mem, result = {}, {}
+    _feed_calm_history(mem, result, 60, cfg["window"], cfg["mom_window"], cfg)
+    assert mem.get("sm_X_state", 0) == 0  # calm history must not have entered
+
+    # A jump large enough to exceed both z_in (amplified by the small sd
+    # from the calm history) and mom_thresh (measured against sd clamped
+    # to a floor of 1.0, so a jump of ~2.0 clears a mom_thresh of 1.0).
+    tr5.run_single_mr("X", cfg, _FakeState(102.0), mem, result)
+
+    assert mem["sm_X_state"] == 0, "momentum filter should have blocked the entry"
+    assert "X" not in result
+
+
+def test_small_jump_without_momentum_still_enters():
+    """Control case: a jump big enough to trip z_in but too small to trip
+    mom_thresh must still be allowed to enter (proves the filter is
+    momentum-specific, not just suppressing all large-z entries)."""
+    cfg = {"window": 50, "z_in": 1.5, "z_out": 0.3, "max_pos": 10,
+           "mom_window": 20, "mom_thresh": 1.0}
+    mem, result = {}, {}
+    _feed_calm_history(mem, result, 60, cfg["window"], cfg["mom_window"], cfg)
+
+    tr5.run_single_mr("X", cfg, _FakeState(100.5), mem, result)
+
+    assert mem["sm_X_state"] != 0, "a small jump under mom_thresh should not be filtered"
+    assert "X" in result

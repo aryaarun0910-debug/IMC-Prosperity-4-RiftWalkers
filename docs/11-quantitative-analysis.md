@@ -37,9 +37,9 @@ PnL alone is not a risk picture. The equity curve, drawdown profile, and per-tic
 
 ![Risk analysis](assets/risk_analysis.png)
 
-- **Equity curve** — steady accumulation rather than a few lucky jumps, which is the signature of an edge that recurs rather than a one-off.
-- **Drawdown** — the maximum peak-to-trough excursion is small relative to total PnL; the strategy does not dig deep holes it then has to climb out of.
-- **Return distribution** — centered positive with controlled tails. The implied Sharpe is reported on the chart.
+- **Equity curve** — steady accumulation rather than a few lucky jumps, which is the signature of an edge that recurs rather than a one-off. Final cumulative PnL across the three concatenated days: **81,450**.
+- **Drawdown** — max peak-to-trough excursion: **−27,740**. Relative to the final PnL that looks contained (~34%), but that comparison flatters it: the worst drawdown happens mid-series (around tick 7,500), where it erases roughly 80–90% of the profit accumulated *up to that point* before the strategy recovers. Read it as "the strategy survives a near-total mid-run giveback and keeps compounding afterward," not as "drawdowns are consistently small."
+- **Return distribution** — centered positive with controlled tails. Annualized Sharpe **≈ 2.0**.
 
 ## Is the edge real, or luck?
 

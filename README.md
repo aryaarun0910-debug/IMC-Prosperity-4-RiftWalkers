@@ -136,7 +136,7 @@ Every figure below is generated from the real competition data ([`analysis/gener
 
 ![Walk-forward validation](docs/assets/walkforward_validation.png)
 
-**Risk, not just PnL.** The equity curve, drawdown profile, and per-tick return distribution for the headline strategy — steady accumulation, contained drawdown, controlled tails.
+**Risk, not just PnL.** The equity curve, drawdown profile, and per-tick return distribution for the headline strategy — steady accumulation, contained drawdown, controlled tails. PEBBLES_XL mean-reversion, concatenated across the three R5 days: **final PnL 81,450**, **max drawdown −27,740**, **annualized Sharpe ≈ 2.0** (computed in [`analysis/generate_quant_charts.py`](analysis/generate_quant_charts.py), `risk_analysis()`).
 
 ![Risk analysis](docs/assets/risk_analysis.png)
 
