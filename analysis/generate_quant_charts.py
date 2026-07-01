@@ -7,11 +7,13 @@ Produces (to docs/assets/):
   risk_analysis.png            Equity curve, drawdown, and return distribution (R5)
   vol_smile.png                Implied-volatility smile across option strikes (R4)
   vol_surface_3d.png           Implied-volatility surface, strike x time (R4)
+  r4_drawdown.png               VEV_4000 intraday mark-to-market on the live-scored R4 day
 
 Requires the competition CSVs under PIPELINE/data/ (not committed). Run from repo root:
     python analysis/generate_quant_charts.py
 """
 import os
+import json
 import math
 import numpy as np
 import matplotlib
@@ -398,6 +400,62 @@ def walk_forward_validation():
     print("  walkforward_validation.png")
 
 
+# ============================================================
+# 7. R4 intraday drawdown: VEV_4000 on the live-scored day
+# ============================================================
+def r4_drawdown():
+    """VEV_4000's real per-tick mark-to-market PnL on the live R4 scoring
+    run (PIPELINE/data/r4/Round 4 Full 10k tick run/545097/545097.json —
+    total profit 19,663.66, matching the reported $19,664 R4 algo result).
+    This is the exact strike docs/09-overfitting-lessons.md describes:
+    peak +7,633, trough -20,991, close -5,781, from a deep-ITM short
+    position that assumed the underlying would keep drifting down."""
+    path = os.path.join(ROOT, "PIPELINE", "data", "r4",
+                         "Round 4 Full 10k tick run", "545097", "545097.json")
+    if not os.path.exists(path):
+        print("  (r4_drawdown skipped: 545097.json not found)")
+        return
+    with open(path, encoding="utf-8") as f:
+        d = json.load(f)
+    log = d["activitiesLog"]
+    lines = log.split("\n")
+    header = lines[0].split(";")
+    idx = {name: i for i, name in enumerate(header)}
+    ticks, pnl = [], []
+    for line in lines[1:]:
+        if not line.strip():
+            continue
+        parts = line.split(";")
+        if parts[idx["product"]] != "VEV_4000":
+            continue
+        ticks.append(int(parts[idx["timestamp"]]))
+        pnl.append(float(parts[idx["profit_and_loss"]]))
+    pnl = np.array(pnl)
+    peak_i, trough_i = int(np.argmax(pnl)), int(np.argmin(pnl))
+
+    fig, ax = plt.subplots(figsize=(11, 5.5))
+    ax.plot(ticks, pnl, color=NAVY, linewidth=1.4)
+    ax.axhline(0, color="#999", linewidth=0.8)
+    ax.fill_between(ticks, pnl, 0, where=(pnl < 0), color=AMBER, alpha=0.25)
+    ax.fill_between(ticks, pnl, 0, where=(pnl >= 0), color=TEAL, alpha=0.20)
+    ax.annotate(f"Peak: +{pnl[peak_i]:,.0f}", (ticks[peak_i], pnl[peak_i]),
+                textcoords="offset points", xytext=(0, 10), ha="center",
+                fontsize=9.5, fontweight="bold", color=TEAL)
+    ax.annotate(f"Trough: {pnl[trough_i]:,.0f}", (ticks[trough_i], pnl[trough_i]),
+                textcoords="offset points", xytext=(0, -16), ha="center",
+                fontsize=9.5, fontweight="bold", color=AMBER)
+    ax.annotate(f"Close: {pnl[-1]:,.0f}", (ticks[-1], pnl[-1]),
+                textcoords="offset points", xytext=(-60, 22), ha="center",
+                fontsize=9.5, fontweight="bold", color=NAVY)
+    ax.set_title("R4 Live-Scored Day: VEV_4000 Mark-to-Market PnL\n(deep-ITM short calibrated to the wrong direction)")
+    ax.set_xlabel("Timestamp (tick)")
+    ax.set_ylabel("Mark-to-market PnL")
+    fig.tight_layout()
+    fig.savefig(os.path.join(OUT, "r4_drawdown.png"), dpi=140)
+    plt.close(fig)
+    print("  r4_drawdown.png")
+
+
 if __name__ == "__main__":
     print("Generating quantitative analysis charts from real competition data:")
     correlation_heatmap()
@@ -406,4 +464,5 @@ if __name__ == "__main__":
     risk_analysis()
     vol_smile_and_surface()
     walk_forward_validation()
+    r4_drawdown()
     print("Done ->", OUT)

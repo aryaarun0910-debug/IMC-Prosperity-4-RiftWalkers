@@ -17,6 +17,8 @@ We shipped an algorithm that added deep-in-the-money short option positions on t
 
 On the development day the underlying drifted down monotonically and the thesis worked. On the scoring day the underlying barely moved on net but spiked intraday, driving the short option book through large mark-to-market drawdowns (one strike: peak +$7,633, trough −$20,991, close −$5,781). Simultaneously, the supposedly-reliable market-making products returned roughly half their backtested PnL — pure single-day variance on identical code.
 
+![R4 VEV_4000 intraday drawdown, real tick-by-tick data from the live-scored run](assets/r4_drawdown.png)
+
 The error was not the options thesis itself; it was sizing it as if the development day's direction was a law.
 
 ## Round 5: the failure caught before shipping

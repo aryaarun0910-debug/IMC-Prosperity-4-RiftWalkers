@@ -19,6 +19,10 @@ The fatal flaw: **we calibrated a directional thesis to one observed day's price
 - The short option book ate massive intraday mark-to-market drawdowns (one strike peaked at +$7,633 then troughed at −$20,991 before recovering to −$5,781).
 - The market-making products that were reliable in backtest also delivered only ~50% of their backtested PnL — single-day variance on identical config.
 
+![R4 VEV_4000 intraday drawdown](assets/r4_drawdown.png)
+
+That strike is VEV_4000 — the real, tick-by-tick mark-to-market PnL from the actual live-scored submission (`PIPELINE/data/r4/Round 4 Full 10k tick run/545097/545097.json`, total algo profit $19,663.66, matching the $19,664 reported above). Two full round trips through a ~$28K swing before the position ever nets out — this is what "the underlying spiked intraday" looks like in practice, not just in prose.
+
 **The mistake had a name we'd use repeatedly afterward: overfitting to a single observed day.** A strategy that depends on the *direction* of a specific day's drift is not a signal — it's a bet that tomorrow looks like today. See the full analysis in [Overfitting Lessons](09-overfitting-lessons.md).
 
 ## Manual side — the optimal we missed

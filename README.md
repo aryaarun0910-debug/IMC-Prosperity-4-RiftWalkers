@@ -141,6 +141,10 @@ Every figure below is generated from the real competition data ([`analysis/gener
 
 ![Implied-volatility smile](docs/assets/vol_smile.png)
 
+**The overfitting failure, in real data.** The clearest single lesson of the competition, shown rather than just described: VEV_4000's actual tick-by-tick mark-to-market PnL on the live-scored R4 day — a deep-ITM short position calibrated to a development day that drifted down, hit by a scoring day that spiked intraday instead. Peak +7,633, trough −20,991, close −5,781, from the real submission log (total algo profit $19,663.66, matching the reported $19,664). Full writeup: [Round 4](docs/05-round4.md) · [Overfitting Analysis](docs/09-overfitting-lessons.md).
+
+![R4 VEV_4000 intraday drawdown](docs/assets/r4_drawdown.png)
+
 ---
 
 ## Methods
