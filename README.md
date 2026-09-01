@@ -96,21 +96,18 @@ Source code is mapped in [`src/README.md`](src/README.md).
 
 ## The trading engine
 
-A single self-contained `trader.py` (standard library only: numpy, pandas, and scipy are disallowed in submissions) implementing nine strategy archetypes, auto-dispatched per product:
+A single self-contained `trader.py` (standard library only: numpy, pandas, and scipy are disallowed in submissions) that routes each product to a strategy handler, either statically pre-configured per round or auto-classified at runtime. The archetypes that actually fired on real Prosperity 4 products:
 
-| Strategy | Application |
-|----------|-------------|
-| `pegged` | Stable-value products: sweep-all liquidity plus overbid/undercut market making |
-| `ar_olivia` | Trending products: AR(p) on returns, Kalman filtering, informed-trader detection |
-| `olivia_follow` | Signal-following with no passive quoting |
-| `wide_spread` | High-volatility products: EMA-based wide market making |
-| `basket_arb` | Index/component arbitrage: z-score entry with partial hedging |
-| `conversion_arb` | Cross-market arbitrage with environmental factors |
-| `options` | Implied-vol scalping and mean-reversion with kill-switch controls |
-| `pairs_arb` | Cointegrated pairs trading |
-| `generic_mm` | Fallback adaptive market making |
+| Strategy | Application | Products |
+|----------|-------------|----------|
+| `pegged` | Stable-value / drifting products: sweep-all liquidity plus overbid/undercut market making | ASH_COATED_OSMIUM, INTARIAN_PEPPER_ROOT (R1), HYDROGEL_PACK, VELVETFRUIT_EXTRACT (R3/R4) |
+| `voucher_intrinsic_mm` | Deep-ITM voucher market making at intrinsic value, delta-hedged to the underlying | VEV_4000 (R3/R4) |
+| `otm_short` | OTM voucher theta-decay short, sized off a computed decay table | VEV_5100–5500 (R3/R4) |
+| `generic_mm` | Runtime fallback for auto-classified products that don't fit a specific pattern | (fallback only) |
+| `do_nothing` | Explicit sit-out where testing showed no edge | VEV_4500, VEV_5000, VEV_6000, VEV_6500 |
+| single-asset z-score mean reversion | Momentum-filtered mean reversion (separate, purpose-built engine: `trader_r5.py`) | R5's 50-product set (PEBBLES_XL etc.) |
 
-The engine implements all nine archetypes (developed across the practice round and prior-year reference data); the live Prosperity 4 rounds exercised a subset: `pegged` market making on the Round 1–4 cash products, `options` IV-scalping on the Round 3–4 vouchers, and a mean-reversion engine on the Round 5 product set.
+**Known limitation.** The engine also defines a runtime classifier, `classify_product_live()`, that uses real statistical criteria (autocorrelation, price range, spread width, basket/cointegration detection) to assign a strategy to any unrecognized product, and it can assign `ar_olivia`, `olivia_follow`, `wide_spread`, `basket_arb`, `conversion_arb`, `pairs_arb`, or even the literal `options` tag. All seven of those resolve to a no-op (`orders = []`) in the actual dispatch table: built, classifiable, but never wired to real trading logic. This never affected real results, since every product that mattered was statically pre-configured before each round started, bypassing the classifier, but it's a genuine gap in the fallback path had an unclassified product appeared live. Full detail in [Pipeline Architecture](docs/08-pipeline-architecture.md).
 
 Supporting infrastructure includes Bayesian Online Changepoint Detection for regime shifts, trim-based position-limit enforcement, markout-driven adverse-selection sizing, and a runtime product classifier. Every model (Black-Scholes, implied-volatility inversion, Kalman filtering, AR regression, changepoint detection) is implemented in pure Python to satisfy the submission constraints. Details in [Pipeline Architecture](docs/08-pipeline-architecture.md).
 
@@ -141,6 +138,10 @@ Every figure below is generated from the real competition data ([`analysis/gener
 **Options.** Inverting Black-Scholes on the Round 4 voucher prices recovers a well-formed, cross-day-stable implied-volatility smile, the basis for trading relative mispricing across strikes rather than absolute price.
 
 ![Implied-volatility smile](docs/assets/vol_smile.png)
+
+**The overfitting failure, in real data.** The clearest single lesson of the competition, shown rather than just described: VEV_4000's actual tick-by-tick mark-to-market PnL on the live-scored R4 day, from a deep-ITM short position calibrated to a development day that drifted down, hit by a scoring day that spiked intraday instead. Peak +7,633 XIRECs, trough −20,991 XIRECs, close −5,781 XIRECs, from the real submission log (total algo profit 19,663.66 XIRECs, matching the reported 19,664 XIRECs). Full writeup: [Round 4](docs/05-round4.md) · [Overfitting Analysis](docs/09-overfitting-lessons.md).
+
+![R4 VEV_4000 intraday drawdown](docs/assets/r4_drawdown.png)
 
 ---
 
