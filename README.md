@@ -31,7 +31,7 @@ The chart above is the competition in one image: the algorithm that scored highe
 
 **RiftWalkers**, a two-person team, finished **700th of 18,803 globally (top 3.7%), 76th in the UK**, with **6th in the world** on the Round 1 manual challenge.
 
-This repository documents all five rounds end to end: the products, the strategies, the underlying mathematics, the results, and an honest analysis of what worked and what did not. The algorithmic side is a single-file, standard-library-only Python trading engine; the manual side is a set of from-first-principles solutions to game-theoretic and quantitative problems; supporting both is a custom backtesting, walk-forward validation, and signal-research pipeline. The work spans market microstructure, options pricing, time-series modeling, Bayesian methods, game theory, and constrained optimization, all implemented and validated from scratch.
+This repository documents all five rounds end to end: the products, the strategies, the underlying mathematics, the results, and an honest analysis of what worked and what did not. The algorithmic side is a single-file, standard-library-only Python trading engine; the manual side is a set of from-first-principles solutions to game-theoretic and quantitative problems; supporting both is a custom back testing, walk-forward validation and signal-research pipeline. The work spans market microstructure, options pricing, time-series modeling, Bayesian methods, game theory, and constrained optimization, all implemented and validated from scratch.
 
 ---
 
