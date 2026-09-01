@@ -22,7 +22,7 @@ src/
 │   ├── gauntlet.py               Regression harness (pre-ship gate)
 │   ├── submit.py                 Strips the engine for upload (<100KB check)
 │   └── ...                       Additional round-specific tooling
-├── analysis/    Offline analysis (numpy/pandas/sklearn permitted — never shipped)
+├── analysis/    Offline analysis (numpy/pandas/sklearn permitted, never shipped)
 │   ├── bot_fingerprinter.py      Counterparty profiling
 │   ├── train_macaron_classifier.py  Offline model whose coefficients ship as constants
 │   └── ...

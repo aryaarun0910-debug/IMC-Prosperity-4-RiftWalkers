@@ -1,6 +1,6 @@
-# 12 — Engineering Practices
+# 12. Engineering Practices
 
-The competition imposed unusually tight engineering constraints — standard-library only, a sub-90KB serialized-state budget, a per-tick compute limit, and atomic order rejection on any limit breach. Those constraints shaped the engineering as much as the trading ideas. This page documents the practices that kept the system correct and iterable under them.
+The competition imposed unusually tight engineering constraints: standard-library only, a sub-90KB serialized-state budget, a per-tick compute limit, and atomic order rejection on any limit breach. Those constraints shaped the engineering as much as the trading ideas. This page documents the practices that kept the system correct and iterable under them.
 
 ## Constraint-driven design
 
@@ -11,15 +11,15 @@ The submission is a single file with no third-party dependencies, because the ex
 - Kalman filtering with per-product-type noise tuning
 - Bayesian Online Changepoint Detection
 
-Writing these by hand — rather than reaching for numpy/scipy — meant the maths had to be understood, not just invoked. The test suite (below) exists partly to guarantee these hand-rolled implementations are correct.
+Writing these by hand, rather than reaching for numpy/scipy, meant the maths had to be understood, not just invoked. The test suite (below) exists partly to guarantee these hand-rolled implementations are correct.
 
 ## Separation of concerns: ships vs. never-ships
 
 The codebase is split by deployment constraint:
 
-- **`src/engine/`** — the only code that runs on the exchange. Standard library only, defensive against malformed input, state serialized within budget.
-- **`src/analysis/`** — offline research. Scientific Python is permitted here because it never ships. Any model trained offline (e.g. a logistic-regression flow classifier) is *distilled to plain constants* before being embedded in the engine, so the engine stays dependency-free.
-- **`src/tools/`** — backtesting, validation, and signal research, sitting between the two.
+- **`src/engine/`**: the only code that runs on the exchange. Standard library only, defensive against malformed input, state serialized within budget.
+- **`src/analysis/`**: offline research. Scientific Python is permitted here because it never ships. Any model trained offline (e.g. a logistic-regression flow classifier) is *distilled to plain constants* before being embedded in the engine, so the engine stays dependency-free.
+- **`src/tools/`**: backtesting, validation, and signal research, sitting between the two.
 
 This boundary is enforced by discipline rather than packaging, and it is the single most important architectural decision: it lets research use the full scientific stack while keeping the shipped artifact within the exchange's rules.
 
@@ -27,10 +27,10 @@ This boundary is enforced by discipline rather than packaging, and it is the sin
 
 The load-bearing logic has a unit-test suite ([`tests/test_engine.py`](../tests/test_engine.py), run with `pytest`):
 
-- **Position-limit enforcement** — the bot must never submit an order pack that breaches a limit; trimming must preserve aggressive takes over passive makes.
-- **Rolling-statistics / z-score maths** — the basis of the mean-reversion alpha, including buffer-capping behaviour.
-- **Black-Scholes pricing and Greeks** — monotonicity in volatility, delta bounds, vega sign, normal-CDF reference values.
-- **Engine smoke tests** — a full tick on an empty/odd book must not crash, and produced state must round-trip back into the engine.
+- **Position-limit enforcement**: the bot must never submit an order pack that breaches a limit; trimming must preserve aggressive takes over passive makes.
+- **Rolling-statistics / z-score maths**: the basis of the mean-reversion alpha, including buffer-capping behaviour.
+- **Black-Scholes pricing and Greeks**: monotonicity in volatility, delta bounds, vega sign, normal-CDF reference values.
+- **Engine smoke tests**: a full tick on an empty/odd book must not crash, and produced state must round-trip back into the engine.
 
 The tests target exactly the components whose failure would be silent and expensive in live trading.
 
@@ -48,7 +48,7 @@ The most important engineering practice was not a tool but a rule, learned the h
 
 ## Version control practice
 
-This repository is maintained with small, atomic commits — one logical change each, with descriptive messages — rather than large monolithic drops. The history reads as a sequence of discrete, reviewable steps.
+This repository is maintained with small, atomic commits (one logical change each, with descriptive messages) rather than large monolithic drops. The history reads as a sequence of discrete, reviewable steps.
 
 ## What this demonstrates
 

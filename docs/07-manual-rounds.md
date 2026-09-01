@@ -1,23 +1,23 @@
-# 07 — Manual Rounds: The Math Behind Our Best Results
+# 07. Manual Rounds: The Math Behind Our Best Results
 
-Our manual game was the strongest part of our competition: **R1 6th in the world**, R2 128th, R5 411th. Manual rounds are pure-skill puzzles — no algo-engine complexity to hide behind — so they reward clean problem formulation. Here's the reasoning behind the two most interesting ones.
+Our manual game was the strongest part of our competition: **R1 6th in the world**, R2 128th, R5 411th. Manual rounds are pure-skill puzzles (no algo-engine complexity to hide behind), so they reward clean problem formulation. Here's the reasoning behind the two most interesting ones.
 
 ---
 
-## Round 1 — Equilibrium optimization (6th globally)
+## Round 1: Equilibrium optimization (6th globally)
 
 The Round 1 manual was a game-theoretic optimization. The approach that produced the result:
 - **Model the payoff structure exactly** from the prompt rather than approximating it.
-- **Reason about the equilibrium** — where aggregate participant behavior settles — rather than optimizing greedily in isolation, since the achievable payoff depends on the collective outcome.
+- **Reason about the equilibrium** (where aggregate participant behavior settles) rather than optimizing greedily in isolation, since the achievable payoff depends on the collective outcome.
 - **Cross-check against a hand expected-value calculation** (a discipline adopted after an earlier solver produced a wrong upper bound).
 
-**Result:** 87,897 against a theoretical maximum of ≈ 87,995 — within **0.1%**. **6th out of ~18,000 teams.**
+**Result:** 87,897 against a theoretical maximum of ≈ 87,995, within **0.1%**. **6th out of ~18,000 teams.**
 
 The lesson that carried forward: re-derive the payoff model from the prompt every time; never trust a prior round's solver blindly.
 
 ---
 
-## Round 5 — News portfolio under quadratic fees
+## Round 5: News portfolio under quadratic fees
 
 **The puzzle:** 9 tradable goods, a 1,000,000 budget, a news feed, and a **quadratic transaction fee**:
 
@@ -33,7 +33,7 @@ PnL(p) = p · 10,000 · |r|  −  100 · p²
 ```
 where `r` is the good's 1-day return.
 
-**The key insight — closed-form optimal sizing.** Differentiate and set to zero:
+**The key insight: closed-form optimal sizing.** Differentiate and set to zero:
 
 ```
 d/dp [ p·10000·|r| − 100·p² ] = 10000·|r| − 200·p = 0
@@ -42,12 +42,12 @@ d/dp [ p·10000·|r| − 100·p² ] = 10000·|r| − 200·p = 0
 
 So the optimal allocation is 50× the expected return percentage, and the expected PnL at the optimum is `250,000 · r²`. Two consequences follow:
 
-1. The quadratic fee enforces diversification. Going all-in on a single idea (say 50% allocation) is self-defeating — the fee grows as p² while gross gain grows only as p. The structure forces capital across many positive-expectancy positions.
+1. The quadratic fee enforces diversification. Going all-in on a single idea (say 50% allocation) is self-defeating: the fee grows as p² while gross gain grows only as p. The structure forces capital across many positive-expectancy positions.
 2. No identifiable edge should be skipped. Any good with a directional read has `p* > 0`. This was the direct correction of the R4 mistake, where skipping "small-edge" trades left roughly $155K on the table.
 
 ![PnL surface under quadratic fees](assets/quadratic_fee_surface_3d.png)
 
-The surface above plots `PnL(p, r) = p·10000·|r| − 100·p²`. The amber ridge traces the optimal allocation `p* = 50|r|` — the locus of maximum PnL for each expected return. The drop-off on the high-allocation side is the quadratic fee penalty; this is what makes over-concentration costly.
+The surface above plots `PnL(p, r) = p·10000·|r| − 100·p²`. The amber ridge traces the optimal allocation `p* = 50|r|`, the locus of maximum PnL for each expected return. The drop-off on the high-allocation side is the quadratic fee penalty; this is what makes over-concentration costly.
 
 ![Optimal sizing frontier](assets/manual_optimal_sizing_2d.png)
 
@@ -59,7 +59,7 @@ Projected onto two dimensions: the navy line is the optimal allocation, the ambe
 3. **Apply `p* = 50|r|`**, then a **Lagrangian** to scale down if the allocations summed past 100%.
 4. **Monte-Carlo** 50,000 draws over our return-estimate uncertainty → full PnL distribution (not a point guess). Result: 100% of simulated outcomes positive, median ~$155K.
 
-**Result:** projected ~$155K (range $120–190K), delivered **$89,187**. The gap is the "wisdom of the crowd" correction — the organizers move actual returns toward the middle of their pre-defined range based on aggregate submissions, so magnitude estimates calibrated to the favorable end of each range landed conservatively. Rank 411 of 18,803.
+**Result:** projected ~$155K (range $120–190K), delivered **$89,187**. The gap is the "wisdom of the crowd" correction: the organizers move actual returns toward the middle of their pre-defined range based on aggregate submissions, so magnitude estimates calibrated to the favorable end of each range landed conservatively. Rank 411 of 18,803.
 
 ![Monte-Carlo PnL distribution](assets/montecarlo_distribution.png)
 
