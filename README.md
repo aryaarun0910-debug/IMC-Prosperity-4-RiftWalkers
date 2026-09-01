@@ -7,7 +7,7 @@
 ![Global](https://img.shields.io/badge/global-700th%20(top%204%25)-success)
 ![UK](https://img.shields.io/badge/UK-76th-success)
 
-A complete, candid record of a two-person team's run through **IMC Prosperity 4**, a five-round global algorithmic and manual trading competition run by [IMC Trading](https://www.imc.com/), with 18,803 participating teams.
+Two of us played **IMC Prosperity 4** end to end: [IMC Trading](https://www.imc.com/)'s five-round global algorithmic and manual trading competition. 18,803 teams entered. This is our full, honest writeup of the run.
 
 > **76th in the UK · 700th of 18,803 globally (top 3.7%) · Manual Round 1: 6th in the world.**
 
@@ -27,11 +27,11 @@ The chart above is the competition in one image: the algorithm that scored highe
 
 ## About
 
-**IMC Prosperity** is one of the largest quantitative trading competitions in the world: a multi-week tournament run by the market-making firm [IMC Trading](https://www.imc.com/), drawing tens of thousands of teams of students, quants, and professionals. Prosperity 4 ran across **five rounds with 18,803 teams**, each round combining an **algorithmic** challenge (an autonomous trading program run against bot counterparties on a simulated exchange) with a **manual** challenge (a one-shot game-theoretic or quantitative puzzle). It rewards breadth in market making, options, statistical arbitrage, optimization, and game theory, under hard engineering constraints.
+**IMC Prosperity** is a multi-week quantitative trading competition run by the market maker [IMC Trading](https://www.imc.com/), open to tens of thousands of teams: students, quants, professionals. Prosperity 4 ran **five rounds with 18,803 teams**. Each round has two parts: an **algorithmic** challenge (an autonomous trading program against bot counterparties on a simulated exchange) and a **manual** challenge (a one-shot game-theoretic or quantitative puzzle). It rewards breadth: market making, options, statistical arbitrage, optimization, game theory, under hard engineering constraints.
 
-**RiftWalkers** was a two-person team that finished **700th of 18,803 globally (top 3.7%), 76th in the UK**, with a **6th-in-the-world** result on the Round 1 manual challenge.
+**RiftWalkers**, a two-person team, finished **700th of 18,803 globally (top 3.7%), 76th in the UK**, with **6th in the world** on the Round 1 manual challenge.
 
-This repository documents all five rounds end to end: the products, the strategies, the underlying mathematics, the results, and a deliberately honest analysis of what worked and what did not. The algorithmic side is a single-file, standard-library-only Python trading engine; the manual side is a set of from-first-principles solutions to game-theoretic and quantitative problems; supporting both is a custom backtesting, walk-forward validation, and signal-research pipeline. The work spans market microstructure, options pricing, time-series modeling, Bayesian methods, game theory, and constrained optimization, all implemented and validated from scratch.
+This repository documents all five rounds end to end: the products, the strategies, the underlying mathematics, the results, and an honest analysis of what worked and what did not. The algorithmic side is a single-file, standard-library-only Python trading engine; the manual side is a set of from-first-principles solutions to game-theoretic and quantitative problems; supporting both is a custom backtesting, walk-forward validation, and signal-research pipeline. The work spans market microstructure, options pricing, time-series modeling, Bayesian methods, game theory, and constrained optimization, all implemented and validated from scratch.
 
 ---
 
@@ -130,8 +130,6 @@ Every figure below is generated from the real competition data ([`analysis/gener
 
 **Where the edge lives.** Sweeping the mean-reversion parameters over a grid produces a smooth PnL surface with a broad plateau, not a sharp spike. Shipping inside the plateau rather than on the peak is a deliberate trade of in-sample PnL for out-of-sample robustness.
 
-![Mean-reversion parameter surface](docs/assets/mean_reversion_surface_3d.png)
-
 **Why robustness matters.** Taking each product's best in-sample configuration and testing it on a held-out day shows the core lesson of the competition: a large fraction of strong-in-training products lose money on the unseen day. Only the survivors are worth shipping, and they are not the highest-training-PnL ones.
 
 ![Walk-forward validation](docs/assets/walkforward_validation.png)
@@ -143,12 +141,6 @@ Every figure below is generated from the real competition data ([`analysis/gener
 **Options.** Inverting Black-Scholes on the Round 4 voucher prices recovers a well-formed, cross-day-stable implied-volatility smile, the basis for trading relative mispricing across strikes rather than absolute price.
 
 ![Implied-volatility smile](docs/assets/vol_smile.png)
-
----
-
-## Methods
-
-Statistical arbitrage · market microstructure · options pricing (Black-Scholes, implied-volatility inversion) · Kalman filtering · autoregressive time-series modeling · Bayesian changepoint detection · game theory and equilibrium analysis · constrained optimization (Lagrangian, Kelly-style sizing) · Monte-Carlo simulation · walk-forward validation.
 
 ---
 
@@ -164,6 +156,6 @@ If we ran it again, the effort would go where the evidence says it should: less 
 
 ## Contributors
 
-A two-person team (Chris Legge and Arya Arun). See individual round documents for the work split between the algorithmic and manual tracks.
+A two-person team, Chris Legge and Arya Arun. There was no fixed division of labor; both of us worked across the algorithmic and manual tracks together.
 
 This repository is a retrospective compiled after the competition closed; all figures are the official final results. The writeups are deliberately candid about failures, particularly the Round 4 algorithmic loss and its root cause, because the analysis of those failures is the most transferable part of the work.

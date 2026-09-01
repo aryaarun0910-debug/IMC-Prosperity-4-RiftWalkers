@@ -2,7 +2,7 @@
 
 ## What is IMC Prosperity?
 
-[IMC Prosperity](https://prosperity.imc.com/) is a global algorithmic trading competition run by [IMC Trading](https://www.imc.com/), a leading market-making firm. Prosperity 4 (2025) ran for **5 rounds** and drew **18,803 teams** worldwide: students, quants, and professionals.
+[IMC Prosperity](https://prosperity.imc.com/) is a global algorithmic trading competition run by [IMC Trading](https://www.imc.com/), a market-making firm. Prosperity 4 (2025) ran for **5 rounds** and drew **18,803 teams** worldwide: students, quants, and professionals.
 
 Each round has two independent components:
 

@@ -43,7 +43,7 @@ d/dp [ p·10000·|r| − 100·p² ] = 10000·|r| − 200·p = 0
 So the optimal allocation is 50× the expected return percentage, and the expected PnL at the optimum is `250,000 · r²`. Two consequences follow:
 
 1. The quadratic fee enforces diversification. Going all-in on a single idea (say 50% allocation) is self-defeating: the fee grows as p² while gross gain grows only as p. The structure forces capital across many positive-expectancy positions.
-2. No identifiable edge should be skipped. Any good with a directional read has `p* > 0`. This was the direct correction of the R4 mistake, where skipping "small-edge" trades left roughly $155K on the table.
+2. No identifiable edge should be skipped. Any good with a directional read has `p* > 0`. This was the direct correction of the R4 mistake, where skipping "small-edge" trades left roughly 155K XIRECs on the table.
 
 ![PnL surface under quadratic fees](assets/quadratic_fee_surface_3d.png)
 
@@ -57,15 +57,15 @@ Projected onto two dimensions: the navy line is the optimal allocation, the ambe
 1. **Read each article** for direction + magnitude, anchored to real-world analogues (a sales-halt food-safety scandal ≈ −45%; a 2.7× user-growth forecast ≈ +40%; a tax-doubling ≈ −25%).
 2. **Spot the fade-tests.** Two articles were transparently-written "influencer pump" calls ("self-proclaimed market-medium," "follow my lead and make money"). Since IMC's game-makers are active traders who design these to reward recognizing manipulation patterns, we **shorted those small**.
 3. **Apply `p* = 50|r|`**, then a **Lagrangian** to scale down if the allocations summed past 100%.
-4. **Monte-Carlo** 50,000 draws over our return-estimate uncertainty → full PnL distribution (not a point guess). Result: 100% of simulated outcomes positive, median ~$155K.
+4. **Monte-Carlo** 50,000 draws over our return-estimate uncertainty → full PnL distribution (not a point guess). Result: 100% of simulated outcomes positive, median ~155K XIRECs.
 
-**Result:** projected ~$155K (range $120–190K), delivered **$89,187**. The gap is the "wisdom of the crowd" correction: the organizers move actual returns toward the middle of their pre-defined range based on aggregate submissions, so magnitude estimates calibrated to the favorable end of each range landed conservatively. Rank 411 of 18,803.
+**Result:** projected ~155K XIRECs (range 120K–190K XIRECs), delivered **89,187 XIRECs**. The gap is the "wisdom of the crowd" correction: the organizers move actual returns toward the middle of their pre-defined range based on aggregate submissions, so magnitude estimates calibrated to the favorable end of each range landed conservatively. Rank 411 of 18,803.
 
 ![Monte-Carlo PnL distribution](assets/montecarlo_distribution.png)
 
 The distribution above is 50,000 simulated outcomes drawing each product's return from its estimated uncertainty band. Every simulated outcome was positive; the delivered result sits below the modeled median, consistent with the crowd-correction mechanic pulling returns toward the center of each range.
 
-The optimizer that produced this, with sensitivity and Monte-Carlo, lives in [`Manual Round 5/r5_manual_optimizer.py`](../Manual%20Round%205/).
+The optimizer that produced this, with sensitivity and Monte-Carlo, lives in [`src/manual/r5_manual_optimizer.py`](../src/manual/r5_manual_optimizer.py).
 
 ---
 

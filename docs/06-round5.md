@@ -29,24 +29,24 @@ The shippable alpha was **single-asset z-score mean reversion with a momentum fi
 - **Momentum filter**: skip new entries when the product is in a strong directional trend (mean-reversion bleeds in trends; this was the key robustness fix).
 - All configs validated to be positive across all 3 days *and* on the held-out walk-forward day.
 
-Our validated engine backtested at +$285K across 3 days (all days positive, min day +$74K).
+Our validated engine backtested at +285K XIRECs across 3 days (all days positive, min day +74K XIRECs).
 
 ### The overfitting trap: caught this time
-Our teammate also produced higher-backtest candidates that **hardcoded LONG/SHORT directional bets calibrated to one observed day** (one literally said in its docstring *"Strategy is calibrated to this known market"*). On the 1-day aesthetic test these scored up to $174K. But run through our 3-day integrated backtester:
+Our teammate also produced higher-backtest candidates that **hardcoded LONG/SHORT directional bets calibrated to one observed day** (one literally said in its docstring *"Strategy is calibrated to this known market"*). On the 1-day aesthetic test these scored up to 174K XIRECs. But run through our 3-day integrated backtester:
 
 | Candidate | 1-day aesthetic | 3-day backtest | Worst day |
 |---|---|---|---|
-| Overfit (hardcoded direction) | **$174K** | +$44K | **−$33K (loses money)** |
-| Signal-based (cross-day validated) | $34K | **+$616K** | **+$143K** |
+| Overfit (hardcoded direction) | **174K XIRECs** | +44K XIRECs | **−33K XIRECs (loses money)** |
+| Signal-based (cross-day validated) | 34K XIRECs | **+616K XIRECs** | **+143K XIRECs** |
 
 This is the R4 lesson in miniature, caught before shipping. The candidate that looked best on the single-day test was the one that lost money on a different day. We flagged it and recommended the cross-day-validated version instead.
 
 ![Overfit vs signal-based validation](assets/overfitting_comparison.png)
 
-### Why the algo still only made +$6,849 live
-The honest outcome: the R5 algo underperformed (+$6,849, rank 896). The live scoring day was a genuinely difficult, different regime, and even validated mean-reversion gives back PnL when the day trends rather than oscillates. **The algo side remained our weak link to the end.** The lesson is that 3 days of data is a thin jury, and pure mean-reversion has a real failure mode (trending days) that no amount of in-sample validation fully removes.
+### Why the algo still only made +6,849 XIRECs live
+The honest outcome: the R5 algo underperformed (+6,849 XIRECs, rank 896). The live scoring day was a genuinely difficult, different regime, and even validated mean-reversion gives back PnL when the day trends rather than oscillates. **The algo side remained our weak link to the end.** The lesson is that 3 days of data is a thin jury, and pure mean-reversion has a real failure mode (trending days) that no amount of in-sample validation fully removes.
 
-## Manual side: news + quadratic fees (+$89,187, rank 411)
+## Manual side: news + quadratic fees (+89,187 XIRECs, rank 411)
 
 The R5 manual gave 9 tradable goods on a foreign exchange, a news feed ("Ashflow Alpha"), a 1,000,000 budget, and a **quadratic fee**: `fee = (allocation%)² × budget`.
 
@@ -58,7 +58,7 @@ We solved it cleanly:
 4. **Monte-Carlo** (50,000 draws) over our return-estimate uncertainty to get a PnL distribution, not just a point estimate.
 5. **Behavioral / game-theory layer**: IMC's game-makers are active traders, so we read the deliberately-suspicious "pump" articles as fade-tests and shorted them small.
 
-Projected ~$155K (range $120–190K). **Delivered $89,187**: the "wisdom of the crowd" correction pulled returns toward the middle of each range, consistent with the moderator's stated grading mechanic. **Rank 411 / 18,803: top 2.2% on the manual.**
+Projected ~155K XIRECs (range 120K–190K XIRECs). **Delivered 89,187 XIRECs**: the "wisdom of the crowd" correction pulled returns toward the middle of each range, consistent with the moderator's stated grading mechanic. **Rank 411 / 18,803: top 2.2% on the manual.**
 
 ## Final standing
 

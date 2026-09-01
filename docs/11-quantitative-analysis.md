@@ -27,8 +27,6 @@ The spread is wide: the most volatile products move several times more per tick 
 
 For the headline mean-reversion alpha (PEBBLES_XL), the strategy has two free parameters: the rolling window for the z-score and the entry threshold. Sweeping both across all three days produces a PnL surface.
 
-![Mean-reversion parameter surface](assets/mean_reversion_surface_3d.png)
-
 The surface is smooth and has a broad plateau rather than a single sharp spike. That matters: a broad optimum means the strategy is not balanced on a knife-edge of parameter values that happened to work on the development data. A sharp, isolated peak would have been a warning sign of overfitting, the same failure mode that cost us Round 4 ([Overfitting Analysis](09-overfitting-lessons.md)). The shipped configuration sits inside the plateau, not on the peak, deliberately trading a little in-sample PnL for out-of-sample robustness.
 
 ## Risk: equity, drawdown, distribution

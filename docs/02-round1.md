@@ -1,4 +1,4 @@
-# 02. Round 1: Foundations + a World-Class Manual
+# 02. Round 1: Foundations, and a 6th-in-the-World Manual
 
 **Result:** Algo +95,490 · Manual +87,897 (**6th in the world**) · Cumulative 183,387
 

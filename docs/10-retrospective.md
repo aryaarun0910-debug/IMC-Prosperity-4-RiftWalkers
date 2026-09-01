@@ -19,7 +19,7 @@ Final standing: 700 of 18,803 teams (top 3.7%). This document summarizes what dr
 - **Overfitting to single-day data** (Round 4, and nearly Round 5). Calibrating to one day's drift produced models that inverted on the scoring day.
 - **A thin validation jury.** Three development days is not enough to certify a signal as robust. Even validated mean-reversion gave back most of its edge on the Round 5 live day because that day trended rather than oscillated.
 
-**Manual execution discipline in Round 4.** Beyond the algo loss, the R4 manual left roughly $155K on the table: partly from skipping positive-expectancy trades judged "too small," and partly from a direction transcription error on one exotic that alone cost about $18K. Both were process failures, not modeling failures, and both were corrected by Round 5 (size every edge; derive direction from the model, not by hand).
+**Manual execution discipline in Round 4.** Beyond the algo loss, the R4 manual left roughly 155K XIRECs on the table: partly from skipping positive-expectancy trades judged "too small," and partly from a direction transcription error on one exotic that alone cost about 18K XIRECs. Both were process failures, not modeling failures, and both were corrected by Round 5 (size every edge; derive direction from the model, not by hand).
 
 ## Where the remaining edge is
 
